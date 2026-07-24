@@ -1,0 +1,1197 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PsYcHo_Aim | Aim Training & Analysis</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Teko:wght@400;600;700&family=Rajdhani:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* ==========================================
+           БАЗОВЫЕ НАСТРОЙКИ И ПЕРЕМЕННЫЕ (КИБЕРСПОРТ)
+           ========================================== */
+      :root {
+        --bg-dark: #0b0c10;
+        --bg-panel: #1f2833;
+        --accent-main: #66fcf1; /* Кибер-голубой */
+        --accent-hover: #45a29e;
+        --text-main: #c5c6c7;
+        --text-bright: #ffffff;
+        --border-color: #3b4252;
+        --font-display: "Teko", sans-serif;
+        --font-body: "Rajdhani", sans-serif;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background-color: var(--bg-dark);
+        color: var(--text-main);
+        font-family: var(--font-body);
+        font-size: 18px;
+        line-height: 1.6;
+        overflow-x: hidden;
+        background-image:
+          linear-gradient(rgba(31, 40, 51, 0.2) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(31, 40, 51, 0.2) 1px, transparent 1px);
+        background-size: 30px 30px;
+      }
+
+      /* Кастомный скроллбар */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: var(--bg-dark);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--border-color);
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: var(--accent-main);
+      }
+
+      /* ==========================================
+           НАВИГАЦИЯ
+           ========================================== */
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 5%;
+        background-color: rgba(11, 12, 16, 0.95);
+        backdrop-filter: blur(10px);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        border-bottom: 2px solid var(--accent-hover);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
+      }
+
+      .logo {
+        font-family: var(--font-display);
+        font-size: 36px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        cursor: pointer;
+        text-transform: uppercase;
+        color: var(--text-bright);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      /* Прицел вместо O в логотипе или просто иконка */
+      .crosshair-icon {
+        width: 24px;
+        height: 24px;
+        position: relative;
+      }
+      .crosshair-icon::before,
+      .crosshair-icon::after {
+        content: "";
+        position: absolute;
+        background: var(--accent-main);
+      }
+      .crosshair-icon::before {
+        top: 50%;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        transform: translateY(-50%);
+      }
+      .crosshair-icon::after {
+        left: 50%;
+        top: 0;
+        height: 100%;
+        width: 2px;
+        transform: translateX(-50%);
+      }
+      .crosshair-icon span {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 8px;
+        height: 8px;
+        border: 2px solid var(--accent-main);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        background: var(--bg-dark);
+      }
+
+      .logo span.highlight {
+        color: var(--accent-main);
+        text-shadow: 0 0 10px rgba(102, 252, 241, 0.5);
+      }
+
+      .nav-links {
+        list-style: none;
+        display: flex;
+        gap: 30px;
+      }
+
+      .nav-links a {
+        text-decoration: none;
+        color: var(--text-main);
+        font-weight: 600;
+        font-size: 20px;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        transition: all 0.2s ease;
+        position: relative;
+        padding: 5px 0;
+      }
+
+      .nav-links a::after {
+        content: "";
+        position: absolute;
+        width: 0;
+        height: 3px;
+        bottom: -2px;
+        left: 0;
+        background-color: var(--accent-main);
+        transition: width 0.3s ease;
+        box-shadow: 0 0 8px var(--accent-main);
+      }
+
+      .nav-links a:hover,
+      .nav-links a.active-link {
+        color: var(--text-bright);
+      }
+
+      .nav-links a:hover::after,
+      .nav-links a.active-link::after {
+        width: 100%;
+      }
+
+      /* ==========================================
+           ГЛАВНЫЙ КОНТЕЙНЕР И ВКЛАДКИ
+           ========================================== */
+      main {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 40px 20px;
+        min-height: 85vh;
+      }
+
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.4s ease forwards;
+        opacity: 0;
+      }
+
+      .tab-content.active {
+        display: block;
+      }
+
+      @keyframes fadeIn {
+        to {
+          opacity: 1;
+        }
+      }
+
+      /* Общие заголовки секций */
+      .section-header {
+        text-align: center;
+        margin-bottom: 50px;
+      }
+      .section-header h2 {
+        font-family: var(--font-display);
+        font-size: 4rem;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--text-bright);
+        line-height: 1;
+      }
+      .section-header h2 span {
+        color: var(--accent-main);
+        text-shadow: 0 0 15px rgba(102, 252, 241, 0.4);
+      }
+      .section-header p {
+        color: var(--text-main);
+        font-size: 1.2rem;
+        margin-top: 5px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      /* ==========================================
+           ГЛАВНАЯ СТРАНИЦА (Кибер-стиль)
+           ========================================== */
+      .hero {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 60px;
+        margin-top: 40px;
+      }
+
+      .hero-text {
+        flex: 1.2;
+      }
+
+      .hero-text h1 {
+        font-family: var(--font-display);
+        font-size: 6rem;
+        line-height: 0.9;
+        margin-bottom: 20px;
+        font-weight: 700;
+        color: var(--text-bright);
+        text-transform: uppercase;
+      }
+
+      .hero-text h1 span {
+        color: var(--accent-main);
+        display: block;
+      }
+
+      .lore {
+        font-size: 1.3rem;
+        color: var(--text-main);
+        margin-bottom: 40px;
+        border-left: 4px solid var(--accent-main);
+        padding-left: 20px;
+        background: linear-gradient(
+          90deg,
+          rgba(102, 252, 241, 0.05) 0%,
+          transparent 100%
+        );
+        padding-top: 15px;
+        padding-bottom: 15px;
+      }
+
+      .btn {
+        background: rgba(31, 40, 51, 0.8);
+        border: 2px solid var(--accent-main);
+        color: var(--accent-main);
+        padding: 15px 40px;
+        font-family: var(--font-display);
+        font-size: 1.8rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        position: relative;
+        overflow: hidden;
+        clip-path: polygon(
+          10px 0,
+          100% 0,
+          100% calc(100% - 10px),
+          calc(100% - 10px) 100%,
+          0 100%,
+          0 10px
+        );
+      }
+
+      .btn:hover {
+        background: var(--accent-main);
+        color: var(--bg-dark);
+        box-shadow: 0 0 20px rgba(102, 252, 241, 0.4);
+      }
+
+      /* Декоративная графика (Мишень) */
+      .hero-visual {
+        flex: 0.8;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+      }
+
+      .target-container {
+        width: 300px;
+        height: 300px;
+        position: relative;
+        border-radius: 50%;
+        border: 2px dashed rgba(102, 252, 241, 0.3);
+        animation: rotateSlow 20s linear infinite;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .target-inner {
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        border: 2px solid var(--accent-hover);
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .target-core {
+        width: 50px;
+        height: 50px;
+        background: var(--accent-main);
+        border-radius: 50%;
+        box-shadow: 0 0 30px var(--accent-main);
+        animation: pulseAim 2s infinite;
+      }
+
+      .crosshair-line {
+        position: absolute;
+        background: rgba(102, 252, 241, 0.5);
+      }
+      .ch-h {
+        width: 150%;
+        height: 2px;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+      .ch-v {
+        height: 150%;
+        width: 2px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      @keyframes rotateSlow {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      @keyframes pulseAim {
+        0% {
+          transform: scale(1);
+          opacity: 0.8;
+        }
+        50% {
+          transform: scale(1.2);
+          opacity: 1;
+          box-shadow: 0 0 50px var(--accent-main);
+        }
+        100% {
+          transform: scale(1);
+          opacity: 0.8;
+        }
+      }
+
+      /* ==========================================
+           СЕКЦИЯ: ВИДЕО
+           ========================================== */
+      /* Используем auto-fill чтобы они не растягивались на всю ширину */
+      .video-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 40px;
+        margin-bottom: 50px;
+      }
+
+      .video-card {
+        background: var(--bg-panel);
+        border: 1px solid var(--border-color);
+        position: relative;
+        transition: all 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        clip-path: polygon(
+          0 0,
+          100% 0,
+          100% calc(100% - 15px),
+          calc(100% - 15px) 100%,
+          0 100%
+        );
+      }
+
+      .video-card:hover {
+        transform: translateY(-5px);
+        box-shadow:
+          0 15px 30px rgba(0, 0, 0, 0.8),
+          0 0 15px rgba(102, 252, 241, 0.2);
+        border-color: var(--accent-main);
+      }
+
+      .video-wrapper {
+        position: relative;
+        width: 100%;
+        /* Идеальная пропорция 16:9 для YouTube */
+        padding-top: 56.25%;
+        background: #000;
+      }
+
+      .video-wrapper iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: none;
+      }
+
+      .video-info {
+        padding: 20px;
+        flex-grow: 1;
+        display: flex;
+        align-items: center;
+        border-top: 2px solid var(--border-color);
+      }
+
+      .video-info h4 {
+        font-family: var(--font-body);
+        font-size: 1.2rem;
+        line-height: 1.3;
+        color: var(--text-bright);
+        font-weight: 600;
+      }
+
+      .loading {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 50px;
+        font-family: var(--font-display);
+        font-size: 2rem;
+        color: var(--accent-main);
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        animation: pulseAim 1.5s infinite;
+      }
+
+      .center-btn {
+        text-align: center;
+        margin-top: 20px;
+      }
+
+      /* ==========================================
+           СЕКЦИЯ: ТЕКСТОВЫЕ РАЗБОРЫ (АККОРДЕОН)
+           ========================================== */
+      .texts-list {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        max-width: 1000px;
+        margin: 0 auto;
+      }
+
+      details.text-card {
+        background: var(--bg-panel);
+        border: 1px solid var(--border-color);
+        transition: all 0.3s ease;
+        position: relative;
+      }
+
+      /* Кибер-уголок */
+      details.text-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 20px;
+        height: 20px;
+        background: var(--bg-dark);
+        border-bottom: 1px solid var(--border-color);
+        border-left: 1px solid var(--border-color);
+      }
+
+      details.text-card:hover {
+        border-color: rgba(102, 252, 241, 0.5);
+        background: rgba(31, 40, 51, 0.8);
+      }
+
+      details.text-card[open] {
+        border-color: var(--accent-main);
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+      }
+      details.text-card[open]::before {
+        border-bottom-color: var(--accent-main);
+        border-left-color: var(--accent-main);
+      }
+
+      summary {
+        padding: 20px 30px;
+        font-family: var(--font-body);
+        font-size: 1.4rem;
+        font-weight: 700;
+        cursor: pointer;
+        list-style: none; /* Убираем стандартный треугольник */
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: var(--text-bright);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: color 0.3s ease;
+      }
+
+      summary::-webkit-details-marker {
+        display: none; /* Убираем треугольник в Safari */
+      }
+
+      summary::after {
+        content: "+";
+        font-family: var(--font-display);
+        font-size: 2.5rem;
+        color: var(--accent-main);
+        font-weight: 400;
+        transition: transform 0.3s ease;
+        line-height: 0.8;
+      }
+
+      details[open] summary::after {
+        transform: rotate(45deg);
+        color: #ff4655; /* Красный крестик при закрытии (стиль Valorant) */
+      }
+
+      details[open] summary {
+        border-bottom: 1px solid rgba(102, 252, 241, 0.2);
+        color: var(--accent-main);
+      }
+
+      .text-content {
+        padding: 30px;
+        color: var(--text-main);
+        font-size: 1.15rem;
+        line-height: 1.8;
+        background: rgba(0, 0, 0, 0.3);
+      }
+
+      .text-content h3 {
+        color: var(--text-bright);
+        margin-top: 20px;
+        margin-bottom: 10px;
+        font-family: var(--font-display);
+        font-size: 2rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .text-content p {
+        margin-bottom: 15px;
+      }
+      .text-content ul {
+        margin-bottom: 15px;
+        padding-left: 20px;
+      }
+      .text-content li {
+        margin-bottom: 5px;
+      }
+
+      /* ==========================================
+           СЕКЦИЯ: АУДИО / ПОДКАСТЫ
+           ========================================== */
+      .audio-list {
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+        max-width: 1000px;
+        margin: 0 auto;
+      }
+
+      .audio-card {
+        background: var(--bg-panel);
+        padding: 25px 30px;
+        border-left: 5px solid var(--accent-main);
+        transition: all 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        clip-path: polygon(
+          0 0,
+          100% 0,
+          100% calc(100% - 15px),
+          calc(100% - 15px) 100%,
+          0 100%
+        );
+      }
+
+      .audio-card:hover {
+        transform: translateX(10px);
+        background: rgba(31, 40, 51, 0.8);
+        box-shadow: -5px 5px 20px rgba(102, 252, 241, 0.05);
+      }
+
+      .audio-info h3 {
+        font-family: var(--font-display);
+        font-size: 2.2rem;
+        color: var(--text-bright);
+        margin-bottom: 5px;
+        text-transform: uppercase;
+        line-height: 1;
+      }
+
+      .audio-info p {
+        color: var(--text-main);
+        font-size: 1.1rem;
+      }
+
+      /* Кастомный аудиоплеер (базовая стилизация) */
+      audio {
+        width: 100%;
+        height: 45px;
+        outline: none;
+      }
+      audio::-webkit-media-controls-panel {
+        background-color: var(--bg-dark);
+        border-radius: 0;
+      }
+      audio::-webkit-media-controls-play-button,
+      audio::-webkit-media-controls-mute-button {
+        filter: invert(1) sepia(1) saturate(5) hue-rotate(130deg); /* Пытаемся покрасить в голубой */
+      }
+      audio::-webkit-media-controls-current-time-display,
+      audio::-webkit-media-controls-time-remaining-display {
+        color: var(--text-bright);
+        font-family: var(--font-body);
+      }
+
+      /* ==========================================
+           АДАПТИВНОСТЬ (МОБИЛКИ)
+           ========================================== */
+      @media (max-width: 850px) {
+        .hero {
+          flex-direction: column;
+          text-align: center;
+        }
+        .hero-text h1 {
+          font-size: 4rem;
+        }
+        .lore {
+          border-left: none;
+          border-top: 4px solid var(--accent-main);
+          padding-top: 20px;
+          background: none;
+        }
+        .hero-visual {
+          display: none; /* Прячем мишень на мобилках для экономии места */
+        }
+
+        .navbar {
+          flex-direction: column;
+          gap: 15px;
+          padding: 15px;
+        }
+        .nav-links {
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 15px;
+        }
+        .nav-links a {
+          font-size: 16px;
+        }
+
+        .section-header h2 {
+          font-size: 3rem;
+        }
+
+        .video-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Навигация -->
+    <nav class="navbar">
+      <div class="logo" onclick="switchTab('home')">
+        <div class="crosshair-icon"><span></span></div>
+        PsYcHo<span class="highlight">_Aim</span>
+      </div>
+      <ul class="nav-links">
+        <li>
+          <a
+            href="#"
+            onclick="switchTab('home')"
+            class="active-link"
+            id="link-home"
+            >База</a
+          >
+        </li>
+        <li>
+          <a href="#" onclick="switchTab('videos')" id="link-videos"
+            >Видео-Аналитика</a
+          >
+        </li>
+        <li>
+          <a href="#" onclick="switchTab('texts')" id="link-texts"
+            >Теория & Разборы</a
+          >
+        </li>
+        <li>
+          <a href="#" onclick="switchTab('audio')" id="link-audio">Подкасты</a>
+        </li>
+      </ul>
+    </nav>
+
+    <main>
+      <!-- СЕКЦИЯ: ГЛАВНАЯ -->
+      <section id="home" class="tab-content active">
+        <div class="hero">
+          <div class="hero-text">
+            <h1>Анализ.<br />Тренировка.<br /><span>Доминация.</span></h1>
+            <p class="lore">
+              Добро пожаловать в хаб PsYcHo_Aim. Здесь мы не просто "кликаем по
+              головам". Мы разбираем биомеханику движения мыши, психологию
+              контроля отдачи, позиционирование и теорию аиминга. Настройка
+              сенсы, хват, периферия и разбор демок — всё, что нужно для
+              превращения из казуала в машину.
+            </p>
+            <a href="#" onclick="switchTab('videos')" class="btn"
+              >Изучить материалы</a
+            >
+          </div>
+          <div class="hero-visual">
+            <!-- Анимированная мишень/прицел -->
+            <div class="target-container">
+              <div class="crosshair-line ch-h"></div>
+              <div class="crosshair-line ch-v"></div>
+              <div class="target-inner">
+                <div class="target-core"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- СЕКЦИЯ: ВИДЕО -->
+      <section id="videos" class="tab-content">
+        <div class="section-header">
+          <h2>Видео <span>Аналитика</span></h2>
+          <p>
+            Последние разборы и тренировки с канала (Подгружаются автоматически)
+          </p>
+        </div>
+
+        <div id="youtube-feed" class="video-grid">
+          <div class="loading">Установка соединения с сервером...</div>
+        </div>
+
+        <div class="center-btn">
+          <a
+            href="https://www.youtube.com/@PsYcHo_Aim"
+            target="_blank"
+            class="btn"
+            >Перейти на YouTube</a
+          >
+        </div>
+      </section>
+
+      <!-- СЕКЦИЯ: ТЕКСТОВЫЕ РАЗБОРЫ (АККОРДЕОН) -->
+      <section id="texts" class="tab-content">
+        <div class="section-header">
+          <h2>Теоретическая <span>База</span></h2>
+          <p>
+            Глубокие текстовые статьи, гайды по настройке и разборы механик.
+          </p>
+        </div>
+
+        <div class="texts-list">
+          <!-- ШАБЛОН ТЕКСТОВОГО РАЗБОРА -->
+          <details class="text-card">
+            <summary>
+              Нейронный апгрейд: Как превратить мозг в совершенную машину для
+              аима с помощью науки
+            </summary>
+            <div class="text-content">
+              <p>
+                Многие игроки совершают фундаментальную ошибку: они пытаются
+                «пробить» плато с помощью многочасового гринда, надеясь на магию
+                количества. Однако с точки зрения нейробиологии аим — это не
+                результат механического износа коврика, а продукт визомоторного
+                освоения навыков (visuomotor skill acquisition). Ваш мозг — это
+                высокоточный 3D-принтер, который непрерывно «печатает» нейронные
+                пути ваших привычек. Проблема в том, что он не делает различий
+                между идеальным фликом и небрежной ошибкой — он просто
+                запоминает то, что вы повторяете чаще всего.
+              </p>
+
+              <p>
+                Как элитный аналитик по киберспортивной производительности, я
+                разберу, как использовать механизмы адаптации человеческой
+                машины, чтобы перестать тренироваться впустую и начать
+                доминировать на уровне физиологии.
+              </p>
+
+              <h2>1. Архитектура М1: Сила нейропластичности и закон Хебба</h2>
+              <p>
+                Каждое движение мыши индуцирует структурные изменения в
+                первичной моторной коре (M1). Этот процесс опирается на
+                активность-зависимую пластичность: когда вы тренируетесь, связи
+                между нейронами физически перестраиваются. Здесь вступает в силу
+                теория Хебба: «нейроны, которые возбуждаются вместе, связываются
+                вместе».
+              </p>
+
+              <p>
+                Представьте этот процесс как превращение едва заметной лесной
+                тропинки в скоростное шоссе. Сначала сигнал идет медленно и с
+                трудом, но через синаптогенез (создание новых синапсов)
+                формируется «нейронная магистраль».
+              </p>
+
+              <blockquote>
+                «Ваш мозг — это ваш аим. Практикуйтесь с осознанием, спите
+                качественно, будьте последовательны». — Из руководства «A
+                Neuroscientific Perspective on Aim Training»
+              </blockquote>
+
+              <p>
+                Помните: нейропластичность — это обоюдоострый меч. Если вы
+                тренируетесь на автопилоте, допуская микро-ошибки в технике, вы
+                буквально асфальтируете путь к стагнации. Мозг запомнит вашу
+                неточность как стандарт.
+              </p>
+
+              <h2>2. Сон: Механизм «Memory Tagging» и консолидация навыка</h2>
+              <p>
+                Мнение, что прогресс происходит во время тренировки — миф. В
+                Aimlabs вы лишь создаете стимул. Реальное обучение происходит во
+                время глубокого сна (7–9 часов).
+              </p>
+
+              <p>
+                В этот период мозг занимается синаптической консолидацией.
+                Особую роль играет механизм «метки памяти» (Memory Tagging).
+                Тренировка непосредственно перед сном «помечает» специфические
+                нейронные пути как приоритетные. Ночью мозг выбирает эти
+                паттерны и укрепляет их, превращая кратковременную память в
+                устойчивый навык. Без качественного сна весь ваш дневной
+                прогресс может быть аннулирован — это буквально «выход из игры
+                без сохранения».
+              </p>
+
+              <h2>
+                3. Универсальный язык cm/360: Точность против реактивности
+              </h2>
+              <p>
+                Забудьте о DPI и внутриигровой чувствительности — это переменные
+                без контекста. Единственная физическая величина, имеющая
+                значение — это cm/360 (количество сантиметров движения мыши для
+                полного разворота на 360°).
+              </p>
+
+              <p>
+                Синтез данных Aimlabs и Voltaic позволяет выделить четкие
+                стандарты:
+              </p>
+              <ul>
+                <li>
+                  <strong>Valorant / CS2 (50 см/360):</strong> Высокий cm/360
+                  обеспечивает максимальную стабильность и прецизионность.
+                </li>
+                <li>
+                  <strong>Overwatch / Apex Legends (35–40 см/360):</strong>
+                  Золотая середина между скоростью перевода и точностью
+                  трекинга.
+                </li>
+                <li>
+                  <strong>Fortnite (30 см/360):</strong> Низкий cm/360 необходим
+                  для реактивности и работы в вертикальных плоскостях при
+                  строительстве.
+                </li>
+              </ul>
+
+              <h2>4. Осознанная практика и борьба с «чизингом»</h2>
+              <p>
+                Разница между профессионалом и любителем заключается в переходе
+                от «бессмысленных повторов» к deliberate practice (осознанной
+                тренировке).
+              </p>
+
+              <p>
+                Осознанная практика — это сфокусированный, структурированный
+                процесс, направленный на устранение конкретной слабости через
+                полную ментальную вовлеченность. Это антипод автопилота.
+              </p>
+
+              <p>
+                Многие игроки впадают в ловушку «чизинга» (Cheesing) —
+                использования уловок ради высокого счета в тренажере. Это может
+                быть эксплуатация предсказуемых паттернов ботов или погоня за
+                скоростью в ущерб технике. Счёт растет, но навык не переносится
+                в реальную игру.
+              </p>
+
+              <p>
+                Для правильного клика используйте метод Барда (Bard method). Он
+                строится на двух фазах: начальный быстрый флик и микрокоррекция.
+                Ключевой инсайт — управление напряжением. Вы должны сбрасывать
+                тонус мышц в начале флика, чтобы избежать «локаута»
+                (закрепощения) и сохранить текучесть для финальной
+                микрокоррекции.
+              </p>
+
+              <h2>5. Мышечный оркестр: Правило 50 см и роль пальцев</h2>
+              <p>Ваш аим — это симфония плеча, кисти и пальцев.</p>
+              <ul>
+                <li>
+                  <strong>Плечо и предплечье:</strong> Широкая амплитуда,
+                  позиционирование.
+                </li>
+                <li><strong>Кисть:</strong> Средние корректировки.</li>
+                <li><strong>Пальцы:</strong> Тончайший микроконтроль.</li>
+              </ul>
+
+              <p>
+                Здесь работает критическое правило: при чувствительности
+                медленнее 50 см/360 пальцы физически исчерпывают свой диапазон
+                движения. В этом случае фокус смещается на предплечье. Важно
+                понимать иерархию: при движении кистью именно она ведет пальцы,
+                но при активации пальцев для микроконтроля — пальцы направляют
+                кисть. Использование пальцев позволяет достичь точности,
+                недоступной при работе одним лишь запястьем.
+              </p>
+
+              <h2>6. Здоровье рук: Протокол Red Bull для сохранения карьеры</h2>
+              <p>
+                Киберспорт — это колоссальная нагрузка на мелкие мышцы и
+                сухожилия. Чтобы избежать тендинита, выполняйте этот комплекс
+                (по 5 повторений, 4 раза в день):
+              </p>
+              <ol>
+                <li>
+                  <strong>«Молитва» (Prayer Position):</strong> Сомкните ладони
+                  перед собой, пальцы вверх. Удерживайте 15–30 секунд. Для
+                  усиления медленно опускайте ладони вниз, не размыкая их.
+                </li>
+                <li>
+                  <strong>«Обратная молитва» (Reverse Prayer):</strong> Сомкните
+                  тыльные стороны ладоней, пальцы вниз. Локти направлены строго
+                  в стороны. Удерживайте 30 секунд.
+                </li>
+                <li>
+                  <strong>Растяжка супинаторов (Supine Flexors):</strong>
+                  Вытяните руку ладонью вверх, другой рукой мягко потяните
+                  пальцы вниз к полу. Удерживайте 30 секунд.
+                </li>
+              </ol>
+
+              <p>
+                <strong>Важно:</strong> Работайте до чувства легкого натяжения.
+                Любая резкая боль или онемение — сигнал к немедленной остановке.
+              </p>
+
+              <h2>
+                7. Инструментарий: Параболическое движение и выбор платформы
+              </h2>
+              <p>Выбор софта зависит от ваших аналитических задач:</p>
+              <ul>
+                <li>
+                  <strong>Aimlabs:</strong> Лучший вход для новичков. Бесплатен,
+                  интегрирован с Voltaic и обладает мощной аналитикой. Однако
+                  помните, что многие старые сценарии используют упрощенное
+                  линейное движение целей.
+                </li>
+                <li>
+                  <strong>Kovaak’s:</strong> Золотой стандарт индустрии. Его
+                  преимущество — параболическое движение ботов. Траектории здесь
+                  спонтанны и реалистичны, что критически важно для развития
+                  «чтения» (reading) цели, а не просто заучивания паттернов.
+                </li>
+                <li>
+                  <strong>Aimbeast:</strong> Выбор для продвинутых аимеров.
+                  Лучшая производительность и сценарии повышенной сложности,
+                  наказывающие за малейшую нестабильность и лишнее напряжение.
+                </li>
+              </ul>
+
+              <h2>Заключение: Станьте архитектором своего навыка</h2>
+              <p>
+                Аим — это не магия, а результат биологической адаптации и
+                дисциплины. Каждый раз, когда вы заходите в игру, вы либо
+                строите эффективную нейронную архитектуру, либо укрепляете свои
+                ошибки.
+              </p>
+
+              <p>
+                Если ваш мозг строит себя прямо сейчас на основе ваших действий,
+                какую версию игрока вы создаете в этот момент? Будьте осознанны,
+                управляйте напряжением и уважайте свою биологию.
+              </p>
+            </div>
+          </details>
+          <!-- КОНЕЦ ШАБЛОНА -->
+        </div>
+      </section>
+
+      <!-- СЕКЦИЯ: АУДИО -->
+      <section id="audio" class="tab-content">
+        <div class="section-header">
+          <h2>Аудио <span>Подкасты</span></h2>
+          <p>Разговоры о менталке, тильте, периферии и киберспорте на фоне.</p>
+        </div>
+
+        <div class="audio-list">
+          <!-- ШАБЛОН АУДИО -->
+          <div class="audio-card">
+            <div class="audio-info">
+              <h3>Подкаст #1: Как мозг на самом деле строит аим</h3>
+              <p>
+                Аимтренинг — это изолированная практика контроля мыши (raw aim),
+                позволяющая за час отработать больше повторений, чем за неделю
+                обычной игры
+              </p>
+            </div>
+            <audio controls>
+              <!-- Вставь название своего файла сюда -->
+              <source src="track1.m4a" type="audio/mpeg" />
+              Ваш браузер не поддерживает аудио.
+            </audio>
+          </div>
+          <!-- КОНЕЦ ШАБЛОНА -->
+          <!-- 
+                <div class="audio-card">
+                    <div class="audio-info">
+                        <h3>Дебаты: Тяжелые мыши vs Ультралегкие</h3>
+                        <p>Действительно ли мыши легче 60 грамм дают преимущество, или это маркетинг? Разбираем инерцию, трение глайдов (тефлон/стекло) и контроль срыва.</p>
+                    </div>
+                    <audio controls>
+                        <source src="track2.mp3" type="audio/mpeg">
+                    </audio>
+                </div>
+		-->
+        </div>
+      </section>
+    </main>
+
+    <script>
+      // ==========================================
+      // ЛОГИКА ПЕРЕКЛЮЧЕНИЯ ВЛАДОК (SPA)
+      // ==========================================
+      function switchTab(tabId) {
+        // Прячем все секции
+        document.querySelectorAll(".tab-content").forEach((tab) => {
+          tab.classList.remove("active");
+        });
+        // Снимаем выделение со всех ссылок
+        document.querySelectorAll(".nav-links a").forEach((link) => {
+          link.classList.remove("active-link");
+        });
+
+        // Показываем нужную
+        document.getElementById(tabId).classList.add("active");
+        // Активируем нужную ссылку
+        document.getElementById("link-" + tabId).classList.add("active-link");
+
+        // Прокрутка наверх при переключении
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      // ==========================================
+      // YOUTUBE API И ПАРСИНГ ВИДЕО
+      // ==========================================
+
+      // ВАЖНО: Вставь сюда свой Channel ID!
+      // Если не вставишь, будут грузиться дефолтные кибер-видео для примера.
+      const CHANNEL_ID = "UCzg3OgHmbozvLWv0PmrqKcQ";
+
+      // Мощная функция для вытаскивания ID видео из любой ссылки
+      function extractVideoID(url) {
+        let regExp =
+          /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+        let match = url.match(regExp);
+        if (match && match[2].length == 11) {
+          return match[2];
+        }
+        let idString = url.split("v=")[1];
+        if (idString) {
+          let ampersandPosition = idString.indexOf("&");
+          if (ampersandPosition != -1) {
+            return idString.substring(0, ampersandPosition);
+          }
+          return idString;
+        }
+        return null;
+      }
+
+      function loadVideos() {
+        const feedContainer = document.getElementById("youtube-feed");
+
+        // Если дефолтный ID не заменен, показываем красивые заглушки-примеры
+        if (CHANNEL_ID === "UCxxxxxxxxxxxxxxxxxxxxxxx") {
+          showPlaceholderVideos(feedContainer);
+          return;
+        }
+
+        const rssUrl = `https://api.rss2json.com/v1/api.json?rss_url=https://www.youtube.com/feeds/videos.xml?channel_id=${CHANNEL_ID}`;
+
+        fetch(rssUrl)
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.status === "ok") {
+              feedContainer.innerHTML = "";
+
+              // Берем последние 6 видео
+              const videos = data.items.slice(0, 6);
+
+              videos.forEach((video) => {
+                const videoId =
+                  extractVideoID(video.link) || video.guid.split(":")[2];
+
+                if (videoId) {
+                  const videoHTML = `
+                                    <div class="video-card">
+                                        <div class="video-wrapper">
+                                            <iframe src="https://www.youtube.com/embed/${videoId}" allowfullscreen title="${video.title}"></iframe>
+                                        </div>
+                                        <div class="video-info">
+                                            <h4>${video.title}</h4>
+                                        </div>
+                                    </div>
+                                `;
+                  feedContainer.innerHTML += videoHTML;
+                }
+              });
+            } else {
+              showErrorState(feedContainer);
+            }
+          })
+          .catch((error) => {
+            showErrorState(feedContainer);
+          });
+      }
+
+      function showPlaceholderVideos(container) {
+        container.innerHTML = `
+                <div class="video-card">
+                    <div class="video-wrapper">
+                        <!-- Пример крутого мувика/аима (заглушка) -->
+                        <iframe src="https://www.youtube.com/embed/Pj152t0h1iM" allowfullscreen></iframe>
+                    </div>
+                    <div class="video-info"><h4>[ЗАГЛУШКА] Вставь свой Channel ID в коде</h4></div>
+                </div>
+                <div class="video-card">
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/5U2zBv5jD1U" allowfullscreen></iframe>
+                    </div>
+                    <div class="video-info"><h4>[ЗАГЛУШКА] Вставь свой Channel ID в коде</h4></div>
+                </div>
+                <div class="video-card">
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/WJ1vT-t5l5Q" allowfullscreen></iframe>
+                    </div>
+                    <div class="video-info"><h4>[ЗАГЛУШКА] Чтобы здесь были твои видео</h4></div>
+                </div>
+            `;
+      }
+
+      function showErrorState(container) {
+        container.innerHTML = `
+                <div class="loading" style="color: #ff4655; animation: none;">
+                    ОШИБКА ДОСТУПА. <br>
+                    Проверь Channel ID в скрипте. Или загрузи сайт на GitHub Pages (локально YouTube может блокировать запросы).
+                </div>
+            `;
+      }
+
+      // Запуск при старте
+      loadVideos();
+    </script>
+  </body>
+</html>
