@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The PsYcHo_Aim Method</title>
+    <style>
+        /* === ПЕРЕМЕННЫЕ И БАЗОВЫЕ СТИЛИ === */
+        :root {
+            --bg-color: #0B0E14;
+            --surface-color: #151A23;
+            --surface-color-hover: #1E2532;
+            --primary-color: #00E5FF;
+            --primary-glow: rgba(0, 229, 255, 0.4);
+            --text-main: #E2E8F0;
+            --text-muted: #94A3B8;
+            --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* === НАВИГАЦИЯ (HEADER) === */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            background: rgba(11, 14, 20, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+            z-index: 100;
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .logo span {
+            color: var(--primary-color);
+        }
+
+        .nav-controls {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        /* Кнопки */
+        .btn {
+            background: transparent;
+            color: var(--text-main);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: #000;
+            border: none;
+            box-shadow: 0 0 15px var(--primary-glow);
+        }
+
+        .btn-primary:hover {
+            background: #00c8e6;
+            box-shadow: 0 0 25px var(--primary-glow);
+        }
+
+        /* === ГЛАВНЫЙ ЭКРАН (HERO) === */
+        #landing {
+            padding-top: 70px;
+            display: block;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .hero {
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 40px 20px;
+            background: radial-gradient(circle at 50% 30%, rgba(0, 229, 255, 0.08) 0%, var(--bg-color) 60%);
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            max-width: 900px;
+            background: linear-gradient(to right, #ffffff, #94A3B8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 800px;
+            margin-bottom: 40px;
+        }
+
+        /* === СЕКЦИЯ ГЛАВ (GRID) === */
+        .chapters-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 20px 100px 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 50px;
+            color: #fff;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--surface-color);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 25px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            background: var(--surface-color-hover);
+            border-color: rgba(0, 229, 255, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .card-number {
+            color: var(--primary-color);
+            font-weight: 800;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        .card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .card p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        /* === ЧИТАЛКА (READER) === */
+        #reader {
+            display: none;
+            padding-top: 70px;
+            height: 100vh;
+            width: 100%;
+            background: #000;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        #pdfFrame {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* === АНИМАЦИИ И АДАПТИВ === */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .hero p { font-size: 1rem; }
+            header { padding: 0 20px; }
+            .nav-controls .btn { padding: 6px 12px; font-size: 0.8rem; }
+            .logo { font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- НАВИГАЦИЯ -->
+    <header>
+        <div class="logo" onclick="openLanding()">
+            <span>[</span> PsYcHo_Aim <span>]</span>
+        </div>
+        <div class="nav-controls">
+            <!-- Кнопка возврата на главную (скрыта по умолчанию) -->
+            <button class="btn" id="backBtn" style="display: none;" onclick="openLanding()">На главную</button>
+            <!-- Кнопка скачивания -->
+            <a id="downloadLink" href="" download>
+                <button class="btn" id="downloadBtn">Скачать PDF</button>
+            </a>
+            <!-- Переключатель языка -->
+            <button class="btn" id="langBtn" onclick="toggleLang()">EN</button>
+            <!-- Кнопка чтения в хедере -->
+            <button class="btn btn-primary" id="navReadBtn" onclick="openReader()">Читать</button>
+        </div>
+    </header>
+
+    <!-- ЛЕНДИНГ (ГЛАВНАЯ СТРАНИЦА) -->
+    <div id="landing">
+        <section class="hero">
+            <h1 id="heroTitle">The PsYcHo_Aim Method:<br>Engineering the Perfect Shot</h1>
+            <p id="heroDesc">
+                Огромный практико-теоретический трактат про прицеливание в шутерах (71 глава, ~160 стр.), который разбирает "аим" не как мистический талант, а как инженерную дисциплину на стыке физики, биомеханики, нейронауки и психологии.
+            </p>
+            <button class="btn btn-primary" style="padding: 15px 40px; font-size: 1.1rem;" id="mainReadBtn" onclick="openReader()">
+                Приступить к чтению
+            </button>
+        </section>
+
+        <section class="chapters-section">
+            <h2 class="section-title" id="structureTitle">Структура книги</h2>
+            <div class="grid" id="chaptersGrid">
+                <!-- Карточки генерируются через JS -->
+            </div>
+        </section>
+    </div>
+
+    <!-- ЧИТАЛКА (Изначально скрыта) -->
+    <div id="reader">
+        <iframe id="pdfFrame" src="" type="application/pdf"></iframe>
+    </div>
+
+    <script>
+        // === БАЗА ДАННЫХ КОНТЕНТА (RU / EN) ===
+        const content = {
+            ru: {
+                langLabel: "EN",
+                downloadBtn: "Скачать PDF",
+                backBtn: "На главную",
+                navReadBtn: "Читать",
+                mainReadBtn: "Приступить к чтению",
+                heroTitle: "The PsYcHo_Aim Method:<br>Engineering the Perfect Shot",
+                heroDesc: "Огромный практико-теоретический трактат про прицеливание в шутерах (71 глава, ~160 стр.), который разбирает «аим» не как мистический талант, а как инженерную дисциплину на стыке физики, биомеханики, нейронауки и психологии.",
+                structureTitle: "Структура книги",
+                pdfFile: "book_ru.pdf",
+                chapters: [
+                    { title: "Foundation", desc: "Базовые понятия: что такое аим на самом деле (отдельно от стрельбы и позиционирования), классификация типов прицеливания, 'жанровая карта'." },
+                    { title: "Biomechanics & Physiology", desc: "Анатомия хвата, кинематика руки, усталость мышц, эргономика и травмы от неестественной механики." },
+                    { title: "Neuroscience & Cognitive Psychology", desc: "Как мозг учится движению, модели моторного контроля, внимание и взгляд, память и перенос навыка." },
+                    { title: "The Mental Component", desc: "Тильт, концентрация, долгосрочное мышление, давление зрителей и магия LAN-турниров." },
+                    { title: "Geometry of Movement", desc: "Страфы, синхронизация клавиатуры и мыши, пикинг как строгая дисциплина." },
+                    { title: "Game Mechanics & Networking", desc: "Как трактуют попадания движки, хитбоксы, netcode и сетевые задержки." },
+                    { title: "Hardware & Physics", desc: "Мыши, коврики, мониторы, сенсоры — физика железа и разбор сетапов про-игроков." },
+                    { title: "Controllers & Aim Assist", desc: "Геймпад, алгоритмическая помощь (Aim Assist) и кроссплей, гироскоп в мобильных играх." },
+                    { title: "Training Methodology", desc: "Нейробиология обучения навыку, экосистема трейнеров и как правильно тренироваться." },
+                    { title: "Measurement & Analytics", desc: "Цифровой след скилла, метрики точности и статистика машинного обучения." },
+                    { title: "Genre Practicums", desc: "Разбор конкретных жанров (CS2, Apex, CoD, MOBA) как 'архитектур нейросети'." },
+                    { title: "Health & Lifestyle", desc: "Биохимия аима: сон, физическая активность, питание и здоровье зрения." },
+                    { title: "History, Culture & Community", desc: "Эволюция навыка прицеливания как феномена, читы и токсичность комьюнити." },
+                    { title: "Myths & Misconceptions", desc: "Деконструкция догматов и разбор популярных заблуждений про аим." },
+                    { title: "Game Feel & Philosophy", desc: "Философия ощущений от игры и дофаминовый контур точного выстрела." },
+                    { title: "Special Topics", desc: "ИИ-коучинг, дальтонизм, телеметрия мыши как поведенческий отпечаток." },
+                    { title: "Appendices", desc: "Академический глоссарий, библиография и шаблоны тренировочных программ." }
+                ]
+            },
+            en: {
+                langLabel: "RU",
+                downloadBtn: "Download PDF",
+                backBtn: "Back to Home",
+                navReadBtn: "Read Now",
+                mainReadBtn: "Start Reading",
+                heroTitle: "The PsYcHo_Aim Method:<br>Engineering the Perfect Shot",
+                heroDesc: "A massive practical-theoretical treatise on aiming in shooters (71 chapters, ~160 pages). It dissects 'aim' not as a mystical talent, but as an engineering discipline at the intersection of physics, biomechanics, neuroscience, and psychology.",
+                structureTitle: "Book Structure",
+                pdfFile: "book_en.pdf",
+                chapters: [
+                    { title: "Foundation", desc: "Basic concepts: what aim truly is (apart from shooting/positioning), aim types classification, and the 'genre map'." },
+                    { title: "Biomechanics & Physiology", desc: "Grip anatomy, arm kinematics, muscle fatigue, ergonomics, and injuries from unnatural mechanics." },
+                    { title: "Neuroscience & Cognitive Psychology", desc: "How the brain learns movement, motor control models, attention and gaze, memory and skill transfer." },
+                    { title: "The Mental Component", desc: "Tilt, focus, long-term thinking, spectator pressure, and the magic of LAN tournaments." },
+                    { title: "Geometry of Movement", desc: "Strafing, keyboard and mouse synchronization, and peeking as a strict discipline." },
+                    { title: "Game Mechanics & Networking", desc: "How engines interpret hits, hitboxes, netcode, and network latency." },
+                    { title: "Hardware & Physics", desc: "Mice, pads, monitors, sensors — the physics of hardware and analyzing pro setups." },
+                    { title: "Controllers & Aim Assist", desc: "Gamepads, algorithmic help (Aim Assist), crossplay, and gyroscopes in mobile games." },
+                    { title: "Training Methodology", desc: "The neurobiology of skill learning, the trainer ecosystem, and deliberate practice." },
+                    { title: "Measurement & Analytics", desc: "The digital footprint of skill, accuracy metrics, and machine learning statistics." },
+                    { title: "Genre Practicums", desc: "Breakdown of specific genres (CS2, Apex, CoD, MOBA) as 'neural network architectures'." },
+                    { title: "Health & Lifestyle", desc: "The biochemistry of aim: sleep, physical activity, nutrition, and vision health." },
+                    { title: "History, Culture & Community", desc: "The evolution of aiming as a phenomenon, cheats, and community toxicity." },
+                    { title: "Myths & Misconceptions", desc: "Deconstructing dogmas and debunking popular aiming myths." },
+                    { title: "Game Feel & Philosophy", desc: "The philosophy of game feel and the dopamine circuit of a precision shot." },
+                    { title: "Special Topics", desc: "AI coaching, color blindness, and mouse telemetry as a behavioral footprint." },
+                    { title: "Appendices", desc: "Academic glossary, bibliography, and training program templates." }
+                ]
+            }
+        };
+
+        let currentLang = 'ru';
+        let currentView = 'landing'; // 'landing' или 'reader'
+
+        // === РАБОТА С COOKIES ===
+        function setCookie(name, value) {
+            const d = new Date();
+            d.setTime(d.getTime() + (365*24*60*60*1000));
+            document.cookie = name + "=" + value + ";expires=" + d.toUTCString() + ";path=/";
+        }
+
+        function getCookie(name) {
+            const nameEQ = name + "=";
+            const ca = document.cookie.split(';');
+            for(let i=0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0)==' ') c = c.substring(1,c.length);
+                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+            }
+            return null;
+        }
+
+        // === ИНИЦИАЛИЗАЦИЯ ===
+        function init() {
+            // Восстанавливаем язык
+            const savedLang = getCookie('psycho_lang');
+            if (savedLang && content[savedLang]) {
+                currentLang = savedLang;
+            } else {
+                const browserLang = navigator.language || navigator.userLanguage;
+                currentLang = browserLang.toLowerCase().includes('en') ? 'en' : 'ru';
+            }
+
+            // Восстанавливаем вьюху (где был пользователь: на главной или читал)
+            const savedView = getCookie('psycho_view');
+            if (savedView === 'reader') {
+                openReader(false); // открываем без перезаписи куки, просто восстанавливаем UI
+            }
+
+            renderContent();
+        }
+
+        // === РЕНДЕР ТЕКСТА И КАРТОЧЕК ===
+        function renderContent() {
+            const t = content[currentLang];
+            document.documentElement.lang = currentLang;
+
+            // Интерфейс
+            document.getElementById('langBtn').textContent = t.langLabel;
+            document.getElementById('downloadBtn').textContent = t.downloadBtn;
+            document.getElementById('backBtn').textContent = t.backBtn;
+            document.getElementById('navReadBtn').textContent = t.navReadBtn;
+            document.getElementById('mainReadBtn').textContent = t.mainReadBtn;
+            
+            // Тексты лендинга
+            document.getElementById('heroTitle').innerHTML = t.heroTitle;
+            document.getElementById('heroDesc').innerHTML = t.heroDesc;
+            document.getElementById('structureTitle').textContent = t.structureTitle;
+
+            // Настройка PDF
+            const pdfPath = t.pdfFile;
+            document.getElementById('pdfFrame').src = pdfPath + "#toolbar=1&navpanes=0&view=FitH";
+            document.getElementById('downloadLink').href = pdfPath;
+            document.getElementById('downloadLink').setAttribute('download', pdfPath);
+
+            // Генерация карточек частей книги
+            const grid = document.getElementById('chaptersGrid');
+            grid.innerHTML = "";
+            t.chapters.forEach((ch, index) => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <div class="card-number">PART ${index + 1}</div>
+                    <h3>${ch.title}</h3>
+                    <p>${ch.desc}</p>
+                `;
+                grid.appendChild(card);
+            });
+
+            setCookie('psycho_lang', currentLang);
+        }
+
+        // === ПЕРЕКЛЮЧЕНИЕ ЯЗЫКА ===
+        function toggleLang() {
+            currentLang = (currentLang === 'ru') ? 'en' : 'ru';
+            renderContent();
+        }
+
+        // === ПЕРЕХОДЫ МЕЖДУ ЭКРАНАМИ ===
+        function openReader(saveState = true) {
+            currentView = 'reader';
+            document.getElementById('landing').style.display = 'none';
+            document.getElementById('reader').style.display = 'block';
+            document.getElementById('backBtn').style.display = 'inline-flex';
+            document.getElementById('navReadBtn').style.display = 'none';
+            window.scrollTo(0, 0); // скролл наверх
+            
+            if (saveState) setCookie('psycho_view', 'reader');
+        }
+
+        function openLanding() {
+            currentView = 'landing';
+            document.getElementById('reader').style.display = 'none';
+            document.getElementById('landing').style.display = 'block';
+            document.getElementById('backBtn').style.display = 'none';
+            document.getElementById('navReadBtn').style.display = 'inline-flex';
+            
+            setCookie('psycho_view', 'landing');
+        }
+
+        // Запуск
+        window.onload = init;
+    </script>
+</body>
+</html>
